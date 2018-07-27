@@ -4,6 +4,7 @@
 
 监听通知栏的信息是否包含指定的文字，如果有，将此条信息用短信的形式转发给指定的手机号。
 
+#### [下载](https://github.com/Wing-Li/SmsForward/releases/download/1.0.0/app-debug.apk)
 
 #### App 灵感：
 
