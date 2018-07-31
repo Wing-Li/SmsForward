@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
 
     Context mContext;
 
+    TextView listenerContent;
     EditText phoneEdt;
     EditText contentEdt;
     Button startBtn;
@@ -47,6 +48,7 @@ public class MainActivity extends Activity {
      * 初始化布局
      */
     private void initViews() {
+        listenerContent = findViewById(R.id.listener_content);
         phoneEdt = findViewById(R.id.phone);
         contentEdt = findViewById(R.id.content);
         startBtn = findViewById(R.id.start);
@@ -80,6 +82,15 @@ public class MainActivity extends Activity {
 
                 SPUtil.put(mContext, SP_PHONE, MyNotificationCollectorService.PHONE);
                 SPUtil.put(mContext, SP_LINNER_TEXT, MyNotificationCollectorService.LINNER_TEXT);
+
+                String[] strings = MyNotificationCollectorService.LINNER_TEXT.split(",");
+
+                StringBuilder str = new StringBuilder("你要监听的内容为：");
+                for (int i = 0; i < strings.length; i++) {
+                    str.append(strings[i]).append(" / ");
+                }
+
+                listenerContent.setText(str.toString());
 
                 Toast.makeText(MainActivity.this, "开始监听", Toast.LENGTH_SHORT).show();
             }

@@ -31,8 +31,20 @@ public class MyNotificationCollectorService extends NotificationListenerService 
             String title = extras.getString(Notification.EXTRA_TITLE, "");
             // 获取通知内容
             String content = extras.getString(Notification.EXTRA_TEXT, "");
-            if (!TextUtils.isEmpty(content) && content.contains(LINNER_TEXT)) {
-                MyUtils.sendMessageBySysterm(PHONE, content);
+            if (!TextUtils.isEmpty(content)) {
+                String[] strings = LINNER_TEXT.split(",");
+                boolean isContains = true;
+                // 用“,”分割之后遍历，只要有一个不包含，就是 false
+                for (int i = 0; i < strings.length; i++) {
+                    if (!content.contains(strings[i])){
+                        isContains = false;
+                        break;
+                    }
+                }
+
+                if (isContains){
+                    MyUtils.sendMessageBySysterm(PHONE, content);
+                }
             }
         }
     }
