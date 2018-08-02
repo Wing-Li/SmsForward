@@ -1,7 +1,6 @@
 package com.lyl.sms.smsforward;
 
 import android.app.Notification;
-import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
@@ -25,24 +24,29 @@ public class MyNotificationCollectorService extends NotificationListenerService 
             return;
         }
 
-        Bundle extras = notification.extras;
-        if (extras != null) {
-            // 获取通知标题
-            String title = extras.getString(Notification.EXTRA_TITLE, "");
+        if (!TextUtils.isEmpty(notification.tickerText)) {
             // 获取通知内容
-            String content = extras.getString(Notification.EXTRA_TEXT, "");
+            String content = notification.tickerText.toString();
             if (!TextUtils.isEmpty(content)) {
-                String[] strings = LINNER_TEXT.split(",");
+
                 boolean isContains = true;
-                // 用“,”分割之后遍历，只要有一个不包含，就是 false
-                for (int i = 0; i < strings.length; i++) {
-                    if (!content.contains(strings[i])){
-                        isContains = false;
-                        break;
+                // 如果要监听的词有多个，就先分割
+                if (LINNER_TEXT.contains(",")) {
+                    String[] strings = LINNER_TEXT.split(",");
+                    // 用“,”分割之后遍历，只要有一个不包含，就是 false
+                    for (int i = 0; i < strings.length; i++) {
+                        if (!content.contains(strings[i])) {
+                            isContains = false;
+                            break;
+                        }
                     }
+
+                } else {
+                    // 要监听的词只有一个
+                    isContains = content.contains(LINNER_TEXT);
                 }
 
-                if (isContains){
+                if (isContains) {
                     MyUtils.sendMessageBySysterm(PHONE, content);
                 }
             }
